@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparsh's 6th Birthday Invite</title>
+    <style>
+        :root {
+            --bg: #f0f4f8;
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --text: #1a2332;
+            --accent: #2563eb;
+            --accent2: #06b6d4;
+            --accent3: #f59e0b;
+            --shadow: rgba(0,0,0,0.15);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f172a;
+                --card-bg: rgba(30, 41, 59, 0.92);
+                --text: #e2e8f0;
+                --accent: #3b82f6;
+                --accent2: #22d3ee;
+                --accent3: #fbbf24;
+                --shadow: rgba(0,0,0,0.4);
+            }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .bg-slideshow {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-slideshow .slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .bg-slideshow .slide.active { opacity: 0.25; }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.1) 100%);
+        }
+
+        .container {
+            text-align: center;
+            padding: 1rem;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .birthday-card, .details-section, .countdown-section, .celebrate-section, .compliments-section {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2.5rem 1.5rem;
+            box-shadow: 0 20px 60px var(--shadow);
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .birthday-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3), var(--accent));
+            background-size: 300% 100%;
+            animation: gradientShift 4s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .photo-container {
+            width: 140px; height: 140px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--accent);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .photo-container:hover { transform: scale(1.05); }
+
+        .photo-container img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+            color: var(--text);
+        }
+
+        .invite-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .age-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: white;
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .birth-info {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            opacity: 0.85;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .countdown-item {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 14px;
+            padding: 1rem 0.3rem;
+            color: white;
+        }
+
+        .countdown-number {
+            font-size: 1.6rem;
+            font-weight: 800;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-top: 0.2rem;
+        }
+
+        /* Celebrate Section */
+        .celebrate-count {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0.5rem 0;
+        }
+
+        .celebrate-label {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .input-group input, .input-group textarea {
+            padding: 0.8rem 1rem;
+            border: 2px solid rgba(37, 99, 235, 0.2);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: var(--card-bg);
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--accent);
+        }
+
+        .input-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .btn-celebrate {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-celebrate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-celebrate:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Compliments List */
+        .compliments-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+
+        .compliment-item {
+            background: rgba(37, 99, 235, 0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            text-align: left;
+        }
+
+        .compliment-name {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .compliment-text {
+            font-size: 0.95rem;
+            opacity: 0.85;
+            line-height: 1.5;
+        }
+
+        .compliment-time {
+            font-size: 0.75rem;
+            opacity: 0.5;
+            margin-top: 0.3rem;
+        }
+
+        .empty-state {
+            opacity: 0.5;
+            font-style: italic;
+            padding: 2rem;
+        }
+
+        .party-footer {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #confetti-canvas, #fireworks-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        #fireworks-canvas { z-index: 99; background: transparent; }
+
+        @media (max-width: 500px) {
+            .countdown-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+            .birthday-card, .details-section, .countdown-section, .celebrate-section, .compliments-section {
+                padding: 1.8rem 1.2rem;
+            }
+            .photo-container { width: 120px; height: 120px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-slideshow">
+        <div class="slide active" style="background-image: url('https://i.ytimg.com/vi/zowmaH7hc5Q/hqdefault.jpg')"></div>
+        <div class="slide" style="background-image: url('https://photos5.appleinsider.com/gallery/40883-79111-B3840B94-33C9-4304-96D9-2BEBF83ECBAD-xl.jpg')"></div>
+        <div class="slide" style="background-image: url('https://variety.com/wp-content/uploads/2025/03/Roblox.jpg?w=1000&h=667&crop=1')"></div>
+        <div class="slide" style="background-image: url('https://i.guim.co.uk/img/media/ecce3f3d2d14d3f78bcc59aebaf119821d603303/67_0_3600_2161/master/3600.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=33bdaa3c150c4b6fd64a1bed0155e8a5')"></div>
+        <div class="slide" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsAhqoPSJWlFBkkGgTNpx6oV-qUSupFhlPjA&s')"></div>
+    </div>
+    <div class="bg-overlay"></div>
+
+    <canvas id="fireworks-canvas"></canvas>
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="container">
+        <div class="birthday-card">
+            <div class="photo-container">
+                <img src="https://i.ibb.co/jP2nrqCm/IMG-20260509-111654154.jpg" alt="Sparsh Jain">
+            </div>
+            <h1>Sparsh Jain</h1>
+            <div class="invite-title">You're Invited!</div>
+            <div class="age-badge">6th Birthday Bash</div>
+            <div class="birth-info">
+                Born on May 23, 2020 at 12:35 AM<br>
+                <span id="current-age"></span>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <div class="details-title">📅 Party Details</div>
+            <div class="detail-item">
+                <span>📅</span>
+                <span><strong>Saturday, 23 May 2026</strong></span>
+            </div>
+            <div class="detail-item">
+                <span>🕚</span>
+                <span><strong>11:00 AM onwards</strong></span>
+            </div>
+            <div class="detail-item">
+                <span>📍</span>
+                <span><strong>Funky Monkey's, Pley Centre 3, Nexus Mall</strong></span>
+            </div>
+        </div>
+
+        <div class="countdown-section">
+            <div class="countdown-title">⏰ Countdown to Party</div>
+            <div class="countdown-grid">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Seconds</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Celebrate Section with Database -->
+        <div class="celebrate-section">
+            <div class="celebrate-count" id="celebrate-count">0</div>
+            <div class="celebrate-label">people celebrating! 🎉</div>
+            
+            <div class="input-group">
+                <input type="text" id="celebrator-name" placeholder="Your Name (optional)" maxlength="100">
+                <textarea id="celebrator-compliment" placeholder="Leave a birthday wish for Sparsh... 💬" maxlength="500"></textarea>
+            </div>
+            
+            <button class="btn-celebrate" id="celebrate-btn" onclick="celebrate()">
+                🎉 Celebrate & Send Wish!
+            </button>
+        </div>
+
+        <!-- Compliments Feed -->
+        <div class="compliments-section">
+            <div class="details-title">💌 Birthday Wishes</div>
+            <div class="compliments-list" id="compliments-list">
+                <div class="empty-state">Be the first to wish Sparsh! 🎂</div>
+            </div>
+        </div>
+
+        <div class="birthday-card">
+            <div class="message">
+                Wishing you a day filled with joy, laughter, and all the things that make you happiest.
+                May this year bring you endless adventures and beautiful memories!
+            </div>
+            <div class="party-footer">🎉 Let's Party! 🎮</div>
+        </div>
+    </div>
+
+    <script>
+        // Background slideshow
+        const slides = document.querySelectorAll('.bg-slideshow .slide');
+        let currentSlide = 0;
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 3000);
+
+        // Dates
+        const PARTY_DATE = new Date(2026, 4, 23, 11, 0, 0);
+        const BIRTH_DATE = new Date(2020, 4, 23, 0, 35, 0);
+
+        function isBirthdayToday() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 4, 23, 0, 35, 0);
+            const end = new Date(now.getFullYear(), 4, 24, 0, 0, 0);
+            return now >= start && now < end;
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = PARTY_DATE - now;
+            
+            if (diff <= 0) {
+                ['days','hours','minutes','seconds'].forEach(id => document.getElementById(id).textContent = '00');
+                return;
+            }
+            
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff % 86400000) / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            
+            document.getElementById('days').textContent = String(d).padStart(2,'0');
+            document.getElementById('hours').textContent = String(h).padStart(2,'0');
+            document.getElementById('minutes').textContent = String(m).padStart(2,'0');
+            document.getElementById('seconds').textContent = String(s).padStart(2,'0');
+            
+            const ageMs = now - BIRTH_DATE;
+            const ageYears = Math.floor(ageMs / (1000 * 60 * 60 * 24 * 365.25));
+            const ageDays = Math.floor(ageMs / (1000 * 60 * 60 * 24));
+            document.getElementById('current-age').textContent = `Currently ${ageYears} years, ${ageDays} days old`;
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // API Base URL (auto-detects local vs production)
+        const API_URL = window.location.origin + '/api';
+
+        // Load celebrations from DB
+        async function loadCelebrations() {
+            try {
+                const res = await fetch(API_URL);
+                const data = await res.json();
+                updateUI(data);
+            } catch (err) {
+                console.error('Failed to load:', err);
+            }
+        }
+
+        function updateUI(data) {
+            document.getElementById('celebrate-count').textContent = data.total || 0;
+            
+            const list = document.getElementById('compliments-list');
+            if (!data.celebrations || data.celebrations.length === 0) {
+                list.innerHTML = '<div class="empty-state">Be the first to wish Sparsh! 🎂</div>';
+                return;
+            }
+            
+            list.innerHTML = data.celebrations.map(c => `
+                <div class="compliment-item">
+                    <div class="compliment-name">${escapeHtml(c.name)}</div>
+                    <div class="compliment-text">${escapeHtml(c.compliment)}</div>
+                    <div class="compliment-time">${formatTime(c.created_at)}</div>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text || '';
+            return div.innerHTML;
+        }
+
+        function formatTime(iso) {
+            if (!iso) return '';
+            const d = new Date(iso);
+            return d.toLocaleString('en-IN', { 
+                day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' 
+            });
+        }
+
+        // Celebrate button
+        async function celebrate() {
+            const btn = document.getElementById('celebrate-btn');
+            const name = document.getElementById('celebrator-name').value.trim();
+            const compliment = document.getElementById('celebrator-compliment').value.trim();
+            
+            btn.disabled = true;
+            btn.textContent = 'Sending... 🎉';
+            
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name || 'Anonymous', compliment })
+                });
+                
+                const data = await res.json();
+                if (data.success) {
+                    updateUI(data);
+                    document.getElementById('celebrator-name').value = '';
+                    document.getElementById('celebrator-compliment').value = '';
+                    spawnConfetti(150, window.innerWidth/2, window.innerHeight/2);
+                    if (isBirthdayToday()) launchFireworks();
+                }
+            } catch (err) {
+                console.error('Failed to celebrate:', err);
+                alert('Oops! Something went wrong. Try again! 🎮');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🎉 Celebrate & Send Wish!';
+            }
+        }
+
+        // Confetti
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const confettiCtx = confettiCanvas.getContext('2d');
+        let confettiParticles = [];
+        
+        function resizeConfetti() {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        }
+        resizeC
